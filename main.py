@@ -257,7 +257,7 @@ class Model:
                 batch_out = outputs[batch_start:batch_end]
                 self.fit_sample(batch_in,batch_out, count=count)
                 count += 1
-                print(count)
+                tqdm.write(count)
 
 if __name__ == "__main__":
     model = Model([
