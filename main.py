@@ -85,10 +85,10 @@ def dsoftmax(x):
     return flat_diag - sub
 
 def cross_entropy(y, y_hat): 
-    return -np.sum(y*np.log(y_hat), axis=1,keepdims=True)
+    return -np.sum(y_hat*np.log(y), axis=1,keepdims=True)
 
 def dcross_entropy(y, y_hat):
-    return -y/y_hat
+    return -y_hat/y
 
 def cross_entropy_L2(y, y_hat, weights, lamb):
     return -np.sum
