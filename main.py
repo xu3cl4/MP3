@@ -85,10 +85,16 @@ def dsoftmax(x):
     return flat_diag - sub
 
 def cross_entropy(y, y_hat): 
-    return -np.sum(y_hat*np.log(y), axis=1,keepdims=True)
+    return -np.sum(y*np.log(y_hat), axis=1,keepdims=True)
 
 def dcross_entropy(y, y_hat):
-    return -y_hat/y
+    return -y/y_hat
+
+def cross_entropy_L2(y, y_hat, weights, lamb):
+    return -np.sum
+
+def dcross_entropy_L2(y, y_hat, weights, lamb):
+    pass
 
 def mse(y,y_hat):
     return 0.5 * np.mean((y - y_hat) **2)
@@ -133,7 +139,8 @@ ACTIVATIONS = {
 
 LOSSES = {
         "crossentropy" : [cross_entropy,dcross_entropy],
-        "mse": [mse,dmse]
+        "mse": [mse,dmse],
+	"crossentropy_L2" : [cross_entropy_L2, dcross_entropy_L2]
 }
 
 
@@ -257,7 +264,6 @@ class Model:
                 batch_out = outputs[batch_start:batch_end]
                 self.fit_sample(batch_in,batch_out, count=count)
                 count += 1
-                tqdm.write(count)
 
 if __name__ == "__main__":
     model = Model([
@@ -270,7 +276,8 @@ if __name__ == "__main__":
 
     ],784)
     # model = Model([
-        # Dense(2),
+        # Dense(2):5
+,
         # Activation("sigmoid"),
         # Dense(2),
         # Activation("softmax")
