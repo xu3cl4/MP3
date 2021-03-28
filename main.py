@@ -4,6 +4,12 @@ from tensorflow.keras.datasets import mnist
 from tqdm import tqdm_notebook as tqdm
 from functools import reduce
 
+def evaluate_acc(y, y_pred):
+    y = np.argmax(y, axis=-1)
+    y_pred = np.argmax(y, axis=-1)
+    match = y[y==y_pred]
+    print(match.shape[0]/y.shape[0])
+
 GAMMA = 0.2
 # for ReLU
 def He(input_nodes, output_nodes):
@@ -212,7 +218,7 @@ class Loss(Layer):
     def forward(self,preds,targets):
         return LOSSES[self.loss_name][0](preds,targets)
     def backward(self,preds,targets):
-        return LOSSES[self.loss_name][1](preds,targets)
+        return) LOSSES[self.loss_name][1](preds,targets)
 
 class Model:
     def __init__(self,layers,input_size):
@@ -242,27 +248,37 @@ class Model:
 
     def backward(self,preds,targets,count):
         loss_val = self.loss.forward(preds,targets)
-        if count % 10 == 0:
-            print(f"loss {np.mean(loss_val).tolist():.3f}")
+        #if count % 10 == 0:
+        #    print(f"loss {np.mean(loss_val).tolist():.3f}")
         reduce(lambda delc, layer : layer.backward(delc),reversed(self.layers),self.loss.backward(preds,targets))
         return loss_val
 
     def predict(self,inputs):
         return self.forward(inputs)
 
-    def fit_sample(self,inputs,outputs,count=1):
+    def fit_sample(self, inputs, outputs, count=1, x=None, y=None, track_iter=False):
         assert self.compiled, "Please compile the model first, with model.compile(loss,optimizer,metrics)"
         preds = self.forward(inputs)
         self.backward(preds, outputs,count)
-    def fit(self,inputs,outputs,batch_size=16,epochs=1,count=1):
+
+        # calculate testing accuracy to determine max_iter
+        if track_iter and count % 10 == 0:
+           y_preds = self.forward(x)
+           print(f"At the {count} iteration, training accuracy is {evaluate_acc(y_true, y_preds)}")
+
+    def fit(self,inputs,outputs,batch_size=16,epochs=1,count=1, max_iter=10000, track_iter=False):
         num_batches = int(inputs.shape[0] / batch_size)
         for epoch in range(epochs):
             for batch_i in tqdm(range(num_batches),desc=f"epoch {epoch} of {epochs}"):
+                if count > max_iter: break 
                 batch_start = batch_i * batch_size
                 batch_end = batch_i * batch_size + batch_size
                 batch_in = inputs[batch_start:batch_end]
                 batch_out = outputs[batch_start:batch_end]
-                self.fit_sample(batch_in,batch_out, count=count)
+                if track_iter:
+                   self.fit_sample(batch_in, batch_out, count=count, x=inputs, y=outputs, track_iter=track_iter) 
+                else:
+                   self.fit_sample(batch_in, batch_out, count=count)
                 count += 1
 
 if __name__ == "__main__":
