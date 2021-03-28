@@ -248,8 +248,8 @@ class Model:
 
     def backward(self,preds,targets,count):
         loss_val = self.loss.forward(preds,targets)
-        #if count % 10 == 0:
-        #    print(f"loss {np.mean(loss_val).tolist():.3f}")
+        if count % 10 == 0:
+            print(f"loss {np.mean(loss_val).tolist():.3f}")
         reduce(lambda delc, layer : layer.backward(delc),reversed(self.layers),self.loss.backward(preds,targets))
         return loss_val
 
