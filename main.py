@@ -96,10 +96,10 @@ def cross_entropy(y, y_hat):
 def dcross_entropy(y, y_hat):
     return -y/y_hat
 
-def cross_entropy_L2(y, y_hat, weights, lamb):
+def cross_entropy_L2(y, y_hat, weights, lambd):
     pass
 
-def dcross_entropy_L2(y, y_hat, weights, lamb):
+def dcross_entropy_L2(y, y_hat, weights, lambd):
     pass
 
 def mse(y,y_hat):
@@ -218,7 +218,7 @@ class Loss(Layer):
     def forward(self,preds,targets):
         return LOSSES[self.loss_name][0](preds,targets)
     def backward(self,preds,targets):
-        return) LOSSES[self.loss_name][1](preds,targets)
+        return LOSSES[self.loss_name][1](preds,targets)
 
 class Model:
     def __init__(self,layers,input_size):
