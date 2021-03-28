@@ -276,8 +276,7 @@ if __name__ == "__main__":
 
     ],784)
     # model = Model([
-        # Dense(2):5
-,
+        # Dense(2),
         # Activation("sigmoid"),
         # Dense(2),
         # Activation("softmax")
