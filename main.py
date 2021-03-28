@@ -140,7 +140,7 @@ ACTIVATIONS = {
 LOSSES = {
         "crossentropy" : [cross_entropy,dcross_entropy],
         "mse": [mse,dmse],
-	"crossentropy_L2" : [cross_entropy_L2, dcross_entropy_L2]
+        "crossentropy_L2" : [cross_entropy_L2, dcross_entropy_L2]
 }
 
 
