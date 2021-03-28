@@ -91,7 +91,7 @@ def dcross_entropy(y, y_hat):
     return -y_hat/y
 
 def cross_entropy_L2(y, y_hat, weights, lamb):
-    return -np.sum
+    pass
 
 def dcross_entropy_L2(y, y_hat, weights, lamb):
     pass
